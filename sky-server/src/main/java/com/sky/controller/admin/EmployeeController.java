@@ -18,6 +18,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 /**
  * 员工管理
@@ -107,5 +110,17 @@ public class EmployeeController {
         PageResult pageResult = employeeService.PageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
 
+    }
+
+    /**启用警用员工账号
+     * @param status 1：启用 0：停用
+     * @param id 员工id
+     */
+    @ApiOperation("启用/停用员工")
+    @PostMapping("/status/{status}")  
+    public Result startOrStop(@PathVariable Integer status,Long id){
+        log.info("启用/停用员工:参数为:{},{}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
     }
 }
