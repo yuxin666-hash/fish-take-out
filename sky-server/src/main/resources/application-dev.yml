@@ -5,4 +5,10 @@ sky:
     port: 3306
     database: sky_take_out
     username: root
-    password: 123456
+    password: ${MYSQL_PASSWORD}
+    # 阿里云OSS配置
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: ${OSS_ACCESS_KEY_ID}
+    access-key-secret: ${OSS_ACCESS_KEY_SECRET}
+    bucket-name: fishstar-java-ai
