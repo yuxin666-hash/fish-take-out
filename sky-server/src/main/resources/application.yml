@@ -45,6 +45,7 @@ sky:
     admin-token-name: token
     user-secret-key: fishstar
     user-ttl: 2592000000
+    user-token-name: authentication
   alioss:
     # 阿里云OSS配置
     endpoint: ${sky.alioss.endpoint}
