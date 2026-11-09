@@ -203,4 +203,23 @@ public class DishServiceImpl implements DishService {
 
         return dishVOList;
     }
+
+ /*
+   * 菜品起售停售
+   * 
+   * @param status
+   * @param ids
+   * 
+   * @return
+   */
+   @Transactional
+   public void startOrStop(Long id, Integer status) {
+    // 根据id查询菜品数据 
+    Dish dish = dishMapper.getById(id);
+    // 修改菜品状态
+    dish.setStatus(status);
+    // 更新菜品数据
+    dishMapper.update(dish);
+    
+   }
 }

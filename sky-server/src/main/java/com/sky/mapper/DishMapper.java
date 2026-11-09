@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
@@ -94,5 +95,17 @@ public interface DishMapper {
      */
     @Select("select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id = #{id}")
     List<Dish> getBySetmealId(Long id);
+
+    /*
+     * 菜品起售停售
+     * 
+     * @param status
+     * @param ids
+     * 
+     * @return
+     */
+    @AutoFill(value = OperationType.UPDATE)
+    @Update("update dish set status = #{status} where id = #{id}")
+    void startOrStop(Long id, Integer status);
 
 }
