@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,7 @@ import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
@@ -34,6 +36,8 @@ public class DishServiceImpl implements DishService {
   private DishFlavorMapper dishFlavorMapper;
   @Autowired
   private SetmealDishMapper setmealDishMapper;
+  @Autowired
+  private SetmealMapper setmealMapper;
 
   /*
    * 新增菜品并保存菜品口味
@@ -146,11 +150,11 @@ public class DishServiceImpl implements DishService {
   public void updateWithFlavor(DishDTO dishDTO) {
     Dish dish = new Dish();
     BeanUtils.copyProperties(dishDTO, dish);
-    //修改菜品基本信息
+    // 修改菜品基本信息
     dishMapper.update(dish);
-    //先删除原有的口味数据
+    // 先删除原有的口味数据
     dishFlavorMapper.deleteByDishId(dishDTO.getId());
-    //重新插入新的口味数据
+    // 重新插入新的口味数据
     List<DishFlavor> flavors = dishDTO.getFlavors();
     if (flavors != null && flavors.size() > 0) {
       // 遍历集合
@@ -162,16 +166,41 @@ public class DishServiceImpl implements DishService {
     }
   }
 
-/**
-     * 根据分类id查询菜品
-     * @param categoryId
-     * @return
-*/
+  /**
+   * 根据分类id查询菜品
+   * 
+   * @param categoryId
+   * @return
+   */
   public List<Dish> list(Long categoryId) {
-      Dish dish = Dish.builder()
+    Dish dish = Dish.builder()
         .categoryId(categoryId)
         .status(StatusConstant.ENABLE)
         .build();
     return dishMapper.list(dish);
   }
+
+   /**
+     * 条件查询菜品和口味
+     * @param dish
+     * @return
+     */
+    public List<DishVO> listWithFlavor(Dish dish) {
+        List<Dish> dishList = dishMapper.list(dish);
+
+        List<DishVO> dishVOList = new ArrayList<>();
+
+        for (Dish d : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+
+            //根据菜品id查询对应的口味
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
+
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+
+        return dishVOList;
+    }
 }
