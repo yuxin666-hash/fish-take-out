@@ -34,8 +34,8 @@ public interface ShoppingCartMapper {
    * 
    * @param shoppingCart
    */
-  @Insert("insert into shopping_cart (user_id, dish_id, setmeal_id, name, image, amount, number, create_time) "+
-  "values (#{userId}, #{dishId}, #{setmealId}, #{name}, #{image}, #{amount}, #{number}, #{createTime})")
+  @Insert("insert into shopping_cart (user_id, dish_id, setmeal_id, name, image, amount, number, create_time) " +
+      "values (#{userId}, #{dishId}, #{setmealId}, #{name}, #{image}, #{amount}, #{number}, #{createTime})")
 
   void insert(ShoppingCart shoppingCart);
 
@@ -46,4 +46,11 @@ public interface ShoppingCartMapper {
    */
   @Delete("delete from shopping_cart where user_id = #{userId}")
   void deleteByUserId(ShoppingCart shoppingCart);
+
+  /**
+   * 批量插入购物车数据
+   *
+   * @param shoppingCartList
+   */
+  void insertBatch(List<ShoppingCart> shoppingCartList);
 }

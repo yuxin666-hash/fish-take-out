@@ -46,7 +46,10 @@ sky:
     user-secret-key: fishstar
     user-ttl: 2592000000
     user-token-name: authentication
-  alioss:
+  shop:
+    address: 江西省抚州市临川区白岭新村
+  baidu:
+    ak: sG3Q7pYDjOhCUqSTsRKavrzrHiPQMHMJ
     # 阿里云OSS配置
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.access-key-id}
